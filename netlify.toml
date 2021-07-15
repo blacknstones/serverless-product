@@ -6,4 +6,4 @@
   publish = "build"
 
 [template.environment]
-  DB_KEY = process.env.DB_KEY
+  DB_KEY = "process.env.DB_KEY"
