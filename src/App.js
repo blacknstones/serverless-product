@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { useState } from 'react';
+import React, { useState } from 'react';
+// import { BrowserRouter, Route, Link } from 'react-router-dom';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
+import { addProduct, getProductById, getProductList, addToCart } from './utils/api';
+import Login from './pages/Login';
 
 const test = {
   id: uuidv4(),
@@ -13,45 +15,59 @@ const test = {
 const App = () => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
+  const [user, setUser] = useState('');
+  const [cart, setCart] = useState({});
 
-  const addProduct = data => {
-    axios
-      .post('/.netlify/functions/createProduct', data)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
-  };
+  const handleUserLogin = name => {
+    console.log(name, 'logged in!')
+    setUser(name);
+  }
 
-  const getProductList = async () => {
-    const productList = await axios.get('/.netlify/functions/getAllProducts');
-    console.log(productList);
-    setProducts(productList.data);
-  };
+  const onAddProduct = () => {
+    addProduct(test);
+  }
 
-  const getProductById = async id => {
-    const productDetails = await axios.get('/.netlify/functions/getAllProducts', id);
-    setProduct(productDetails);
-    console.log(`The product you selected is ${productDetails}`);
+  const onGetProducts = async () => {
+    const allProducts = await getProductList();
+    setProducts(allProducts);
+  }
 
-  };
+  const onGetProductById = async (id) => {
+    const productDetail = await getProductById(id);
+    setProduct(productDetail);
+  }
+
+  const onAddToCart = async (cartName, product) => {
+    const newCart = await addToCart(cartName, product);
+    setCart(newCart);
+  }
+
+  
 
   return (
-    <div className='App'>
-      <h1>Add products to db</h1>
-      <button onClick={() => addProduct(test)}>Add product</button>
-      <button onClick={() => getProductList()}>Get all products</button>
-      {products &&
-        products.map(el => (
-          <div key={el.data.id} onClick={() => getProductById(el.data.id)}>
-            <p>{el.data.id}</p>
-            <p>{el.data.name}</p>
-            <p>{el.data.description}</p>
-            <p>{el.data.price}</p>
-          </div>
-        ))}
-        {product ? "" : ""}
-    </div>
+      <div className='App'>
+        <Login handleUserLogin={handleUserLogin} />
+        <h1>Add products to db</h1>
+        <button onClick={onAddProduct}>Add product</button>
+        <button onClick={onGetProducts}>Get all products</button>
+        {products &&
+          products.map(el => (
+            <div key={el.data.id} onClick={() => {onGetProductById(el.data.id)}}>
+              <p>{el.data.id}</p>
+              <p>{el.data.name}</p>
+              <p>{el.data.description}</p>
+              <p>{el.data.price}</p>
+              <button onClick={() => onAddToCart(user, el.data)}>Add to cart</button>
+            </div>
+          ))}
+          {product ? "" : ""}
+          <div>{cart && 
+          <div>
+            <p>{cart.name}</p>
+            <p>{cart.totalNumberOfItems}</p>
+            <p>{cart.totalPrice}</p>
+            </div>}</div>
+      </div>
   );
 };
 

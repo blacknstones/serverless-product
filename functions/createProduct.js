@@ -1,5 +1,4 @@
 const faunadb = require('faunadb');
-const uuid = require('uuid');
 
 const q = faunadb.query;
 const client = new faunadb.Client({
