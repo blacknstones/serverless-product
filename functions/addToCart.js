@@ -13,6 +13,7 @@ exports.handler = async (event, context) => {
   try {
     console.log('Trying to get your damn cart');
     clientCart = await client.query(q.Get(q.Ref(`classes/carts/${name}`)));
+    console.log('clientCart', clientCart);
     console.log(`Adding to ${name}´s cart...`, product);
   } catch (err) {
     console.log(err);
