@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import { BrowserRouter, Route, Link } from 'react-router-dom';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
-import { addProduct, getProductById, getProductList, addToCart } from './utils/api';
+import { addProduct, getProductList, addToCart } from './utils/api';
 import Login from './pages/Login';
 
 const test = {
@@ -14,7 +14,7 @@ const test = {
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [product, setProduct] = useState({});
+  //const [product, setProduct] = useState({});
   const [user, setUser] = useState('');
   const [cart, setCart] = useState({});
 
@@ -32,17 +32,19 @@ const App = () => {
     setProducts(allProducts);
   }
 
-  const onGetProductById = async (id) => {
+/*   const onGetProductById = async (id) => {
     const productDetail = await getProductById(id);
     setProduct(productDetail);
-  }
+  } */
 
   const onAddToCart = async (cartName, product) => {
+    console.log('onAddToCart', product);
     const newCart = await addToCart(cartName, product);
+    console.log('newCart', newCart);
     setCart(newCart);
   }
 
-  
+  //onClick={() => {onGetProductById(el.data.id)}}
 
   return (
       <div className='App'>
@@ -52,7 +54,7 @@ const App = () => {
         <button onClick={onGetProducts}>Get all products</button>
         {products &&
           products.map(el => (
-            <div key={el.data.id} onClick={() => {onGetProductById(el.data.id)}}>
+            <div key={el.data.id}>
               <p>{el.data.id}</p>
               <p>{el.data.name}</p>
               <p>{el.data.description}</p>
@@ -60,7 +62,7 @@ const App = () => {
               <button onClick={() => onAddToCart(user, el.data)}>Add to cart</button>
             </div>
           ))}
-          {product ? "" : ""}
+
           <div>{cart && 
           <div>
             <p>{cart.name}</p>
