@@ -8,8 +8,15 @@ const client = new faunadb.Client({
 exports.handler = async (event, context) => {
   const name = event.path.match(/([^\/]*)\/*$/)[0];
   const product = await JSON.parse(event.body);
-  const clientCart = await client.query(q.Get(q.Ref(`classes/carts/${name}`)));
-  console.log(`Adding to ${name}´s cart...`, product);
+  let clientCart;
+  try {
+
+    clientCart = await client.query(q.Get(q.Ref(`classes/carts/${name}`)));
+    console.log(`Adding to ${name}´s cart...`, product);
+
+  } catch (err) {
+    console.log(err);
+  }
 
   // Create a cart if none exists:
   if (!clientCart) {
