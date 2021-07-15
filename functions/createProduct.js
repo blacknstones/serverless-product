@@ -1,4 +1,5 @@
 const faunadb = require('faunadb');
+const uuid = require('uuid');
 
 const q = faunadb.query;
 const client = new faunadb.Client({
@@ -11,6 +12,7 @@ exports.handler = async (event, context) => {
   console.log(`Creating product...`, data);
 
   const product = {
+    id: uuid(),
     data,
   };
 
