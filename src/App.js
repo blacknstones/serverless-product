@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
 import './App.css';
+import uuid from ('uuid');
 
 const test = {
+    id: uuid(),
     name: 'Computer',
     description: 'It computes things',
     price: 2999

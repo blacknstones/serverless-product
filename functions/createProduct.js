@@ -12,7 +12,6 @@ exports.handler = async (event, context) => {
   console.log(`Creating product...`, data);
 
   const product = {
-    id: uuid(),
     data,
   };
 
