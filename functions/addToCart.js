@@ -20,15 +20,15 @@ exports.handler = async (event, context) => {
   // Create a cart if none exists:
   if (!clientCart) {
     const newCart = {
-      name,
-      products: [product],
-      totalNumberOfItems: 1,
-      totalPrice: product.price,
+      data: {
+        name,
+        products: [product],
+        totalNumberOfItems: 1,
+        totalPrice: product.price,
+      },
     };
-    console.log('This is the new cart you just created', newCart);
 
     return client.query(q.Create(q.Ref('classes/carts'), newCart)).then(res => {
-      console.log('This is the new cart', newCart);
       console.log(`Cart created successfully!`, res);
       return {
         statusCode: 201,
@@ -37,10 +37,12 @@ exports.handler = async (event, context) => {
     });
   } else {
     const updatedCart = {
-      name,
-      products: [...clientCart.products, product],
-      totalNumberOfItems: clientCart.totalNumberOfItems + 1,
-      totalPrice: clientCart.totalPrice + product.price,
+      data: {
+        name,
+        products: [...clientCart.data.products, product],
+        totalNumberOfItems: clientCart.data.totalNumberOfItems + 1,
+        totalPrice: clientCart.data.totalPrice + product.price,
+      },
     };
     return client
       .query(q.Update(q.Ref(`classes/carts/${name}`), updatedCart))
