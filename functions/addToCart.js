@@ -9,11 +9,10 @@ exports.handler = async (event, context) => {
   const name = event.path.match(/([^\/]*)\/*$/)[0];
   const product = await JSON.parse(event.body);
   let clientCart;
-  try {
 
+  try {
     clientCart = await client.query(q.Get(q.Ref(`classes/carts/${name}`)));
     console.log(`Adding to ${name}´s cart...`, product);
-
   } catch (err) {
     console.log(err);
   }
@@ -26,7 +25,10 @@ exports.handler = async (event, context) => {
       totalNumberOfItems: 1,
       totalPrice: product.price,
     };
+    console.log('This is the new cart you just created', newCart);
+
     return client.query(q.Create(q.Ref('classes/carts'), newCart)).then(res => {
+      console.log('This is the new cart', newCart);
       console.log(`Cart created successfully!`, res);
       return {
         statusCode: 201,
