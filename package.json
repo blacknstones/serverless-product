@@ -21,9 +21,7 @@
     "start": "npm-run-all --parallel start:app start:server",
     "start:app": "react-scripts start",
     "start:server": "netlify-lambda serve functions -c ./webpack.config.js",
-    "build": "npm run build:app && npm run build:functions",
-    "build:app": "react-scripts build",
-    "build:functions": "netlify-lambda build functions -c ./webpack.config.js",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "bootstrap": "node ./bootstrap-fauna-database.js"
   },
