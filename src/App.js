@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
 import './App.css';
-import uuid from ('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 const test = {
-    id: uuid(),
+    id: uuidv4(),
     name: 'Computer',
     description: 'It computes things',
     price: 2999
