@@ -50,6 +50,7 @@ const App = () => {
             <p>{el.data.price}</p>
           </div>
         ))}
+        {product ? "" : ""}
     </div>
   );
 };
